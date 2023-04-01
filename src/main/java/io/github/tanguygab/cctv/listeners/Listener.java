@@ -47,9 +47,9 @@ public class Listener implements org.bukkit.event.Listener {
         vm = cctv.getViewers();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH)
     public void on(PlayerInteractEvent e) {
-        InteractEvent.on(e);
+        if (!e.isCancelled()) InteractEvent.on(e);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)

@@ -135,14 +135,17 @@ public class ViewerManager extends Manager<Viewer> {
         }
 
         List<Camera> cams = new ArrayList<>(group.getCameras());
+
+
+
         if (previous) Collections.reverse(cams);
 
         Camera currentCam = viewer.getCamera();
         Camera cam = cams.indexOf(currentCam) == cams.size()-1
                 ? cams.get(0)
                 : cams.get(cams.indexOf(currentCam)+1);
-        cm.viewCameraInstant(cam, p);
-        viewer.setCamera(cam);
+        if (cm.viewCameraInstant(cam, p))
+            viewer.setCamera(cam);
     }
 
 }

@@ -33,7 +33,9 @@ public class InteractEvent {
         ComputerManager cpm = CCTV.get().getComputers();
         Computer computer = cpm.get(block);
         if (e.getHand() != EquipmentSlot.OFF_HAND && computer != null) {
-            if (computer.canUse(p)) cpm.open(p, computer);
+            if (computer.canUse(p)) {
+                cpm.open(p, computer);
+            }
             else p.sendMessage(CCTV.get().getLang().COMPUTER_NOT_ALLOWED);
             e.setCancelled(true);
             return;

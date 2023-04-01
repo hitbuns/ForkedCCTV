@@ -1,7 +1,9 @@
 package io.github.tanguygab.cctv.managers;
 
+import io.github.tanguygab.cctv.Events.CameraConnectEvent;
 import io.github.tanguygab.cctv.entities.Camera;
 import io.github.tanguygab.cctv.entities.CameraGroup;
+import io.github.tanguygab.cctv.utils.BukkitEventCaller;
 import io.github.tanguygab.cctv.utils.Heads;
 import io.github.tanguygab.cctv.utils.Utils;
 import org.bukkit.*;
@@ -150,23 +152,26 @@ public class CameraManager extends Manager<Camera> {
         return null;
     }
 
-    public void viewCamera(Player p, Camera cam, CameraGroup group) {
+    public boolean viewCamera(Player p, Camera cam, CameraGroup group) {
         if (cam == null) {
             p.sendMessage(lang.CAMERA_NOT_FOUND);
-            return;
+            return false;
         }
-        if (connecting.contains(p)) return;
+        if (connecting.contains(p)) return false;
         if (!cam.isEnabled()) {
             if (!p.hasPermission("cctv.camera.view.override") && !p.hasPermission("cctv.admin")) {
                 p.sendTitle(lang.CAMERA_OFFLINE, "",0, 15, 0);
-                return;
+                return false;
             }
             p.sendMessage(lang.CAMERA_OFFLINE_OVERRIDE);
         }
         if (EXPERIMENTAL_VIEW && Utils.distance(p.getLocation(),cam.getArmorStand().getLocation()) >= 60) {
             p.sendMessage(lang.CAMERA_TOO_FAR);
-            return;
+            return false;
         }
+
+        if (BukkitEventCaller.callEvent(new CameraConnectEvent(p,cam)))
+            return false;
 
         ViewerManager vm = cctv.getViewers();
         p.sendTitle(" ", lang.CAMERA_CONNECTING, 0, vm.TIME_TO_CONNECT*20, 0);
@@ -176,19 +181,25 @@ public class CameraManager extends Manager<Camera> {
             cctv.getNMS().setCameraPacket(p,cam.getArmorStand());
             connecting.remove(p);
         }, vm.TIME_TO_CONNECT * 20L);
+        return true;
     }
 
-    public void viewCameraInstant(Camera cam, Player p) {
+    public boolean viewCameraInstant(Camera cam, Player p) {
         if (cam == null) {
             cctv.getViewers().delete(p);
             p.sendMessage(lang.CAMERA_NOT_FOUND);
-            return;
+            return false;
         }
         if (EXPERIMENTAL_VIEW && Utils.distance(p.getLocation(),cam.getArmorStand().getLocation()) >= 60) {
             p.sendMessage(lang.CAMERA_TOO_FAR);
-            return;
+            return false;
         }
+
+        if (BukkitEventCaller.callEvent(new CameraConnectEvent(p,cam)))
+            return false;
+
         cctv.getNMS().setCameraPacket(p,cam.getArmorStand());
+        return true;
     }
 
     public void rotateHorizontally(Player p, Camera camera, int degrees) {
