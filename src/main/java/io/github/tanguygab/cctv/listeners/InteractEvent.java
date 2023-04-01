@@ -30,11 +30,14 @@ public class InteractEvent {
         Block block = e.getClickedBlock();
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK || block == null) return;
 
+
+
         ComputerManager cpm = CCTV.get().getComputers();
         Computer computer = cpm.get(block);
         if (e.getHand() != EquipmentSlot.OFF_HAND && computer != null) {
             if (computer.canUse(p)) {
-                cpm.open(p, computer);
+
+                if (!e.isCancelled()) cpm.open(p, computer);
             }
             else p.sendMessage(CCTV.get().getLang().COMPUTER_NOT_ALLOWED);
             e.setCancelled(true);

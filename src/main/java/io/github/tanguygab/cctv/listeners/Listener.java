@@ -49,7 +49,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void on(PlayerInteractEvent e) {
-        if (!e.isCancelled()) InteractEvent.on(e);
+        InteractEvent.on(e);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST,ignoreCancelled = true)

@@ -34,7 +34,7 @@ dependencies {
     compileOnly 'com.mojang:authlib:3.3.39'
     compileOnly 'com.mojang:brigadier:1.0.18'
     compileOnly 'com.github.LoneDev6:api-itemsadder:3.0.0'
-    compileOnly fileTree(dir: 'C:/Users/j_vo0/IdeaProjects/CCTV/gradle/libs/bundler/versions',
+    compileOnly fileTree(dir: 'C:/Users/Administrator/IdeaProjects/ForkedCCTV/gradle/libs/bundler/versions',
             include: '*.jar')
     //'${projectDir}/libs/bundler/versions/spigot-api-1.18.2-R0.1-SNAPSHOT.jar',
     //            '${projectDir}/libs/bundler/libraries/spigot-1.18.2-R0.1-SNAPSHOT.jar'
