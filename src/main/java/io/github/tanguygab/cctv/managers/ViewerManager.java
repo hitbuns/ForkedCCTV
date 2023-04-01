@@ -1,11 +1,13 @@
 package io.github.tanguygab.cctv.managers;
 
+import io.github.tanguygab.cctv.Events.SwitchCameraEvent;
 import io.github.tanguygab.cctv.config.ConfigurationFile;
 import io.github.tanguygab.cctv.entities.Camera;
 import io.github.tanguygab.cctv.entities.CameraGroup;
 import io.github.tanguygab.cctv.entities.Viewer;
 import io.github.tanguygab.cctv.menus.CCTVMenu;
 import io.github.tanguygab.cctv.menus.ViewerOptionsMenu;
+import io.github.tanguygab.cctv.utils.BukkitEventCaller;
 import io.github.tanguygab.cctv.utils.Heads;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -134,7 +136,11 @@ public class ViewerManager extends Manager<Viewer> {
             return;
         }
 
-        List<Camera> cams = new ArrayList<>(group.getCameras());
+        SwitchCameraEvent switchCameraEvent = new SwitchCameraEvent(p,
+                new ArrayList<>(group.getCameras()));
+        if (BukkitEventCaller.callEvent(switchCameraEvent)) return;
+
+        List<Camera> cams = switchCameraEvent.cameras;
 
 
 
